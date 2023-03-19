@@ -7,107 +7,107 @@
 
  Below is the public api currently provided by "list".
 
-## list_t *list_new();
+## tools_list_t *tools_list_new();
 
  Allocate and initialize a `list`.
  
-    list_t *mylist = list_new();
+    tools_list_t *mylist = tools_list_new();
 
-## list_node_t \*list_node_new(void *val)
+## tools_list_node_t \*tools_list_node_new(void *val)
 
- Allocate and initialize a `list_node_t` with the given _val_.
+ Allocate and initialize a `tools_list_node_t` with the given _val_.
 
 ```c
-list_node_t *node = list_node_new("my value");
+tools_list_node_t *node = tools_list_node_new("my value");
 node->val; // "my value"
 ```
 
-## list_node_t \* list_rpush(list_t \*self, list_node_t *node)
+## tools_list_node_t \* tools_list_rpush(tools_list_t \*self, tools_list_node_t *node)
 
  Append _node_ to _self_, returning _node_.
  
 ```c
-list_rpush(list, list_node_new("value"));
+tools_list_rpush(list, tools_list_node_new("value"));
 list->tail->val; // "value"
 ```
 
-## list_node_t \* list_rpop(list_t \*self)
+## tools_list_node_t \* tools_list_rpop(tools_list_t \*self)
 
   Return / detach node from the end of the list, or __NULL__.
 
 ```c
-list_node_t *last = list_rpop(names);
+tools_list_node_t *last = tools_list_rpop(names);
 ```
 
-##  list_node_t \*list_lpush(list_t \*self, list_node_t *node)
+##  tools_list_node_t \*tools_list_lpush(tools_list_t \*self, tools_list_node_t *node)
 
  Prepend _node_ to _self_, returning _node_.
 
 ```c
-list_lpush(list, list_node_new("value"));
+tools_list_lpush(list, tools_list_node_new("value"));
 list->head->val; // "value"
 ```
 
-## list_node_t \*list_find(list_t \*self, void *val)
+## tools_list_node_t \*tools_list_find(tools_list_t \*self, void *val)
 
- Return the `list_node_t` containing _val_ or __NULL__.
+ Return the `tools_list_node_t` containing _val_ or __NULL__.
 
 ```c
-list_node_t *node = list_find(list, "some value");
+tools_list_node_t *node = tools_list_find(list, "some value");
 ```
 
-## list_node_t \*list_at(list_t *self, int index)
+## tools_list_node_t \*tools_list_at(tools_list_t *self, int index)
 
- Return the `list_node_t` at the given _index_, where _index_
+ Return the `tools_list_node_t` at the given _index_, where _index_
  may also be a negative integer indicating an index from the
  list _tail_.
 
 ```c
-list_at(list, 0);  // first
-list_at(list, 1);  // second
-list_at(list, -1); // last
-list_at(list, -3); // third last
+tools_list_at(list, 0);  // first
+tools_list_at(list, 1);  // second
+tools_list_at(list, -1); // last
+tools_list_at(list, -3); // third last
 ```
 
-## void list_remove(list_t \*self, list_node_t *node)
+## void tools_list_remove(tools_list_t \*self, tools_list_node_t *node)
 
   Remove _node_ from the list, freeing it and it's value.
 
 ```c
-list_remove(list, node);
+tools_list_remove(list, node);
 ```
 
-## void list_destroy(list_t *self)
+## void tools_list_destroy(tools_list_t *self)
 
   Free the list and all nodes.
 
 ```c
-list_destroy(list);
+tools_list_destroy(list);
 ```
 
-## list_iterator_t \*list_iterator_new(list_t *list, list_direction_t direction)
+## tools_list_iterator_t \*tools_list_iterator_new(tools_list_t *list, tools_list_direction_t direction)
 
-  Allocate and initialize a `list_iterator_t` with the given _direction_,
-  where _direction_ may be __LIST_HEAD__ or __LIST_TAIL__.
+  Allocate and initialize a `tools_list_iterator_t` with the given _direction_,
+  where _direction_ may be __tools_list_HEAD__ or __tools_list_TAIL__.
 
 ```c
-list_node_t *node;
-list_iterator_t *it = list_iterator_new(list, LIST_HEAD);
-while ((node = list_iterator_next(it))) {
+tools_list_node_t *node;
+tools_list_iterator_t *it = tools_list_iterator_new(list, tools_list_HEAD);
+while ((node = tools_list_iterator_next(it))) {
   puts(node->val);
 }
 ```  
 
-## list_node_t \*list_iterator_next(list_iterator_t *self)
+## tools_list_node_t \*tools_list_iterator_next(tools_list_iterator_t *self)
 
-  Return the next `list_node_t` or __NULL__.
+  Return the next `tools_list_node_t` or __NULL__.
 
-## void list_iterator_destroy(list_iterator_t *self);
+## void tools_list_iterator_destroy(tools_list_iterator_t *self);
 
   Free the iterator only.
 
 ```c
-list_iterator_destroy(it);
+tools_list_iterator_destroy(it);
 ```
 
 ## Examples
@@ -115,20 +115,20 @@ list_iterator_destroy(it);
 list iteration:
 
 ```c
-list_t *langs = list_new();
+tools_list_t *langs = tools_list_new();
 
-list_node_t *c = list_rpush(langs, list_node_new("c"));
-list_node_t *js = list_rpush(langs, list_node_new("js"));
-list_node_t *ruby = list_rpush(langs, list_node_new("ruby"));
+tools_list_node_t *c = tools_list_rpush(langs, tools_list_node_new("c"));
+tools_list_node_t *js = tools_list_rpush(langs, tools_list_node_new("js"));
+tools_list_node_t *ruby = tools_list_rpush(langs, tools_list_node_new("ruby"));
 
-list_node_t *node;
-list_iterator_t *it = list_iterator_new(langs, LIST_HEAD);
-while ((node = list_iterator_next(it))) {
+tools_list_node_t *node;
+tools_list_iterator_t *it = tools_list_iterator_new(langs, tools_list_HEAD);
+while ((node = tools_list_iterator_next(it))) {
   puts(node->val);
 }
 
-list_iterator_destroy(it);
-list_destroy(langs);
+tools_list_iterator_destroy(it);
+tools_list_destroy(langs);
 ```
 
 stdout:

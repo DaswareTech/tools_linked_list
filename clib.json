@@ -6,9 +6,9 @@
   "keywords": ["list", "structure"],
   "license": "MIT",
   "src": [
-    "src/list_iterator.c",
+    "src/tools_list_iterator.c",
     "src/list.c",
-    "src/list_node.c",
+    "src/tools_list_node.c",
     "src/list.h"
   ],
   "development": {

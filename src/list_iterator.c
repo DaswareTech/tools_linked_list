@@ -8,27 +8,27 @@
 #include "list.h"
 
 /*
- * Allocate a new list_iterator_t. NULL on failure.
- * Accepts a direction, which may be LIST_HEAD or LIST_TAIL.
+ * Allocate a new tools_list_iterator_t. NULL on failure.
+ * Accepts a direction, which may be tools_list_HEAD or tools_list_TAIL.
  */
 
-list_iterator_t *
-list_iterator_new(list_t *list, list_direction_t direction) {
-  list_node_t *node = direction == LIST_HEAD
+tools_list_iterator_t *
+tools_list_iterator_new(tools_list_t *list, tools_list_direction_t direction) {
+  tools_list_node_t *node = direction == TOOLS_LIST_HEAD
     ? list->head
     : list->tail;
-  return list_iterator_new_from_node(node, direction);
+  return tools_list_iterator_new_from_node(node, direction);
 }
 
 /*
- * Allocate a new list_iterator_t with the given start
+ * Allocate a new tools_list_iterator_t with the given start
  * node. NULL on failure.
  */
 
-list_iterator_t *
-list_iterator_new_from_node(list_node_t *node, list_direction_t direction) {
-  list_iterator_t *self;
-  if (!(self = LIST_MALLOC(sizeof(list_iterator_t))))
+tools_list_iterator_t *
+tools_list_iterator_new_from_node(tools_list_node_t *node, tools_list_direction_t direction) {
+  tools_list_iterator_t *self;
+  if (!(self = tools_list_MALLOC(sizeof(tools_list_iterator_t))))
     return NULL;
   self->next = node;
   self->direction = direction;
@@ -36,15 +36,15 @@ list_iterator_new_from_node(list_node_t *node, list_direction_t direction) {
 }
 
 /*
- * Return the next list_node_t or NULL when no more
+ * Return the next tools_list_node_t or NULL when no more
  * nodes remain in the list.
  */
 
-list_node_t *
-list_iterator_next(list_iterator_t *self) {
-  list_node_t *curr = self->next;
+tools_list_node_t *
+tools_list_iterator_next(tools_list_iterator_t *self) {
+  tools_list_node_t *curr = self->next;
   if (curr) {
-    self->next = self->direction == LIST_HEAD
+    self->next = self->direction == TOOLS_LIST_HEAD
       ? curr->next
       : curr->prev;
   }
@@ -56,7 +56,7 @@ list_iterator_next(list_iterator_t *self) {
  */
 
 void
-list_iterator_destroy(list_iterator_t *self) {
-  LIST_FREE(self);
+tools_list_iterator_destroy(tools_list_iterator_t *self) {
+  tools_list_FREE(self);
   self = NULL;
 }

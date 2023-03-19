@@ -12,8 +12,8 @@ CFLAGS = -O3 -std=c99 -Wall -Wextra -Ideps
 LDFLAGS ?= -Wl,-z,now
 
 SRCS = src/list.c \
-		   src/list_node.c \
-		   src/list_iterator.c
+		   src/tools_list_node.c \
+		   src/tools_list_iterator.c
 
 OBJS = $(SRCS:.c=.o)
 

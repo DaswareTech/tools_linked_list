@@ -8,13 +8,13 @@
 #include "list.h"
 
 /*
- * Allocate a new list_t. NULL on failure.
+ * Allocate a new tools_list_t. NULL on failure.
  */
 
-list_t *
-list_new(void) {
-  list_t *self;
-  if (!(self = LIST_MALLOC(sizeof(list_t))))
+tools_list_t *
+tools_list_new(void) {
+  tools_list_t *self;
+  if (!(self = tools_list_MALLOC(sizeof(tools_list_t))))
     return NULL;
   self->head = NULL;
   self->tail = NULL;
@@ -30,19 +30,19 @@ list_new(void) {
  */
 
 void
-list_destroy(list_t *self) {
+tools_list_destroy(tools_list_t *self) {
   unsigned int len = self->len;
-  list_node_t *next;
-  list_node_t *curr = self->head;
+  tools_list_node_t *next;
+  tools_list_node_t *curr = self->head;
 
   while (len--) {
     next = curr->next;
     if (self->free) self->free(curr->val);
-    LIST_FREE(curr);
+    tools_list_FREE(curr);
     curr = next;
   }
 
-  LIST_FREE(self);
+  tools_list_FREE(self);
 }
 
 /*
@@ -52,8 +52,8 @@ list_destroy(list_t *self) {
  * @node: the node to push
  */
 
-list_node_t *
-list_rpush(list_t *self, list_node_t *node) {
+tools_list_node_t *
+tools_list_rpush(tools_list_t *self, tools_list_node_t *node) {
   if (!node) return NULL;
 
   if (self->len) {
@@ -75,11 +75,11 @@ list_rpush(list_t *self, list_node_t *node) {
  * @self: Pointer to the list for popping node
  */
 
-list_node_t *
-list_rpop(list_t *self) {
+tools_list_node_t *
+tools_list_rpop(tools_list_t *self) {
   if (!self->len) return NULL;
 
-  list_node_t *node = self->tail;
+  tools_list_node_t *node = self->tail;
 
   if (--self->len) {
     (self->tail = node->prev)->next = NULL;
@@ -96,11 +96,11 @@ list_rpop(list_t *self) {
  * @self: Pointer to the list for popping node
  */
 
-list_node_t *
-list_lpop(list_t *self) {
+tools_list_node_t *
+tools_list_lpop(tools_list_t *self) {
   if (!self->len) return NULL;
 
-  list_node_t *node = self->head;
+  tools_list_node_t *node = self->head;
 
   if (--self->len) {
     (self->head = node->next)->prev = NULL;
@@ -119,8 +119,8 @@ list_lpop(list_t *self) {
  * @node: the node to push
  */
 
-list_node_t *
-list_lpush(list_t *self, list_node_t *node) {
+tools_list_node_t *
+tools_list_lpush(tools_list_t *self, tools_list_node_t *node) {
   if (!node) return NULL;
 
   if (self->len) {
@@ -143,26 +143,26 @@ list_lpush(list_t *self, list_node_t *node) {
  * @val: Value to find 
  */
 
-list_node_t *
-list_find(list_t *self, void *val) {
-  list_iterator_t *it = list_iterator_new(self, LIST_HEAD);
-  list_node_t *node;
+tools_list_node_t *
+tools_list_find(tools_list_t *self, void *val) {
+  tools_list_iterator_t *it = tools_list_iterator_new(self, TOOLS_LIST_HEAD);
+  tools_list_node_t *node;
 
-  while ((node = list_iterator_next(it))) {
+  while ((node = tools_list_iterator_next(it))) {
     if (self->match) {
       if (self->match(val, node->val)) {
-        list_iterator_destroy(it);
+        tools_list_iterator_destroy(it);
         return node;
       }
     } else {
       if (val == node->val) {
-        list_iterator_destroy(it);
+        tools_list_iterator_destroy(it);
         return node;
       }
     }
   }
 
-  list_iterator_destroy(it);
+  tools_list_iterator_destroy(it);
   return NULL;
 }
 
@@ -172,20 +172,20 @@ list_find(list_t *self, void *val) {
  * @index: the index of node in the list
  */
 
-list_node_t *
-list_at(list_t *self, int index) {
-  list_direction_t direction = LIST_HEAD;
+tools_list_node_t *
+tools_list_at(tools_list_t *self, int index) {
+  tools_list_direction_t direction = TOOLS_LIST_HEAD;
 
   if (index < 0) {
-    direction = LIST_TAIL;
+    direction = TOOLS_LIST_TAIL;
     index = ~index;
   }
 
   if ((unsigned)index < self->len) {
-    list_iterator_t *it = list_iterator_new(self, direction);
-    list_node_t *node = list_iterator_next(it);
-    while (index--) node = list_iterator_next(it);
-    list_iterator_destroy(it);
+    tools_list_iterator_t *it = tools_list_iterator_new(self, direction);
+    tools_list_node_t *node = tools_list_iterator_next(it);
+    while (index--) node = tools_list_iterator_next(it);
+    tools_list_iterator_destroy(it);
     return node;
   }
 
@@ -199,7 +199,7 @@ list_at(list_t *self, int index) {
  */
 
 void
-list_remove(list_t *self, list_node_t *node) {
+tools_list_remove(tools_list_t *self, tools_list_node_t *node) {
   node->prev
     ? (node->prev->next = node->next)
     : (self->head = node->next);
@@ -210,6 +210,6 @@ list_remove(list_t *self, list_node_t *node) {
 
   if (self->free) self->free(node->val);
 
-  LIST_FREE(node);
+  tools_list_FREE(node);
   --self->len;
 }

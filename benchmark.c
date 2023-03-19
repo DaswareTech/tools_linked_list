@@ -29,9 +29,9 @@ static void
 bm_rpush() {
   start();
   int n = nnodes;
-  list_t *list = list_new();
+  tools_list_t *list = tools_list_new();
   while (n--) {
-    list_rpush(list, list_node_new("foo"));
+    tools_list_rpush(list, tools_list_node_new("foo"));
   }
   stop();
 }
@@ -40,9 +40,9 @@ static void
 bm_lpush() {
   start();
   int n = nnodes;
-  list_t *list = list_new();
+  tools_list_t *list = tools_list_new();
   while (n--) {
-    list_lpush(list, list_node_new("foo"));
+    tools_list_lpush(list, tools_list_node_new("foo"));
   }
   stop();
 }
@@ -50,27 +50,27 @@ bm_lpush() {
 static void
 bm_find() {
   int n = nnodes;
-  list_t *list = list_new();
+  tools_list_t *list = tools_list_new();
   while (n--) {
-    list_lpush(list, list_node_new("foo"));
+    tools_list_lpush(list, tools_list_node_new("foo"));
   }
-  list_rpush(list, list_node_new("bar"));
+  tools_list_rpush(list, tools_list_node_new("bar"));
   start();
-  list_find(list, "bar");
+  tools_list_find(list, "bar");
   stop();
 }
 
 static void
 bm_iterate() {
   int n = nnodes;
-  list_t *list = list_new();
+  tools_list_t *list = tools_list_new();
   while (n--) {
-    list_lpush(list, list_node_new("foo"));
+    tools_list_lpush(list, tools_list_node_new("foo"));
   }
-  list_iterator_t *it = list_iterator_new(list, LIST_HEAD);
-  list_node_t *node;
+  tools_list_iterator_t *it = tools_list_iterator_new(list, tools_list_HEAD);
+  tools_list_node_t *node;
   start();
-  while ((node = list_iterator_next(it)))
+  while ((node = tools_list_iterator_next(it)))
     ;
   stop();
 }
@@ -78,13 +78,13 @@ bm_iterate() {
 static void
 bm_rpop() {
   int n = nnodes;
-  list_t *list = list_new();
+  tools_list_t *list = tools_list_new();
   while (n--) {
-    list_lpush(list, list_node_new("foo"));
+    tools_list_lpush(list, tools_list_node_new("foo"));
   }
-  list_node_t *node;
+  tools_list_node_t *node;
   start();
-  while ((node = list_rpop(list)))
+  while ((node = tools_list_rpop(list)))
     ;
   stop();
 }
@@ -92,45 +92,45 @@ bm_rpop() {
 static void
 bm_lpop() {
   int n = nnodes;
-  list_t *list = list_new();
+  tools_list_t *list = tools_list_new();
   while (n--) {
-    list_lpush(list, list_node_new("foo"));
+    tools_list_lpush(list, tools_list_node_new("foo"));
   }
-  list_node_t *node;
+  tools_list_node_t *node;
   start();
-  while ((node = list_lpop(list)))
+  while ((node = tools_list_lpop(list)))
     ;
   stop();
 }
 
-static list_t *list;
+static tools_list_t *list;
 
 static void
 bm_at() {
   start();
-  list_at(list, 100000);
+  tools_list_at(list, 100000);
   stop();
 }
 
 static void
 bm_at2() {
   start();
-  list_at(list, 1000000);
+  tools_list_at(list, 1000000);
   stop();
 }
 
 static void
 bm_at3() {
   start();
-  list_at(list, -100000);
+  tools_list_at(list, -100000);
   stop();
 }
 
 int
 main(void){
   int n = nnodes;
-  list = list_new();
-  while (n--) list_lpush(list, list_node_new("foo"));
+  list = tools_list_new();
+  while (n--) tools_list_lpush(list, tools_list_node_new("foo"));
   puts("\n 10,000,000 nodes\n");
   bm("lpush", bm_lpush);
   bm("rpush", bm_rpush);

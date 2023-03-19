@@ -5,8 +5,8 @@
 // Copyright (c) 2010 TJ Holowaychuk <tj@vision-media.ca>
 //
 
-#ifndef __CLIBS_LIST_H__
-#define __CLIBS_LIST_H__
+#ifndef __CLIBS_tools_list_H__
+#define __CLIBS_tools_list_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,115 +16,115 @@ extern "C" {
 
 // Library version
 
-#define LIST_VERSION "0.2.0"
+#define tools_list_VERSION "0.2.0"
 
 // Memory management macros
-#ifdef LIST_CONFIG_H
+#ifdef tools_list_CONFIG_H
 #define _STR(x) #x
 #define STR(x) _STR(x)
-#include STR(LIST_CONFIG_H)
+#include STR(tools_list_CONFIG_H)
 #undef _STR
 #undef STR
 #endif
 
-#ifndef LIST_MALLOC
-#define LIST_MALLOC malloc
+#ifndef tools_list_MALLOC
+#define tools_list_MALLOC malloc
 #endif
 
-#ifndef LIST_FREE
-#define LIST_FREE free
+#ifndef tools_list_FREE
+#define tools_list_FREE free
 #endif
 
 /*
- * list_t iterator direction.
+ * tools_list_t iterator direction.
  */
 
 typedef enum {
-    LIST_HEAD
-  , LIST_TAIL
-} list_direction_t;
+    TOOLS_LIST_HEAD
+  , TOOLS_LIST_TAIL
+} tools_list_direction_t;
 
 /*
- * list_t node struct.
+ * tools_list_t node struct.
  */
 
-typedef struct list_node {
-  struct list_node *prev;
-  struct list_node *next;
+typedef struct tools_list_node {
+  struct tools_list_node *prev;
+  struct tools_list_node *next;
   void *val;
-} list_node_t;
+} tools_list_node_t;
 
 /*
- * list_t struct.
+ * tools_list_t struct.
  */
 
 typedef struct {
-  list_node_t *head;
-  list_node_t *tail;
+  tools_list_node_t *head;
+  tools_list_node_t *tail;
   unsigned int len;
   void (*free)(void *val);
   int (*match)(void *a, void *b);
-} list_t;
+} tools_list_t;
 
 /*
- * list_t iterator struct.
+ * tools_list_t iterator struct.
  */
 
 typedef struct {
-  list_node_t *next;
-  list_direction_t direction;
-} list_iterator_t;
+  tools_list_node_t *next;
+  tools_list_direction_t direction;
+} tools_list_iterator_t;
 
 // Node prototypes.
 
-list_node_t *
-list_node_new(void *val);
+tools_list_node_t *
+tools_list_node_new(void *val);
 
-// list_t prototypes.
+// tools_list_t prototypes.
 
-list_t *
-list_new(void);
+tools_list_t *
+tools_list_new(void);
 
-list_node_t *
-list_rpush(list_t *self, list_node_t *node);
+tools_list_node_t *
+tools_list_rpush(tools_list_t *self, tools_list_node_t *node);
 
-list_node_t *
-list_lpush(list_t *self, list_node_t *node);
+tools_list_node_t *
+tools_list_lpush(tools_list_t *self, tools_list_node_t *node);
 
-list_node_t *
-list_find(list_t *self, void *val);
+tools_list_node_t *
+tools_list_find(tools_list_t *self, void *val);
 
-list_node_t *
-list_at(list_t *self, int index);
+tools_list_node_t *
+tools_list_at(tools_list_t *self, int index);
 
-list_node_t *
-list_rpop(list_t *self);
+tools_list_node_t *
+tools_list_rpop(tools_list_t *self);
 
-list_node_t *
-list_lpop(list_t *self);
-
-void
-list_remove(list_t *self, list_node_t *node);
+tools_list_node_t *
+tools_list_lpop(tools_list_t *self);
 
 void
-list_destroy(list_t *self);
-
-// list_t iterator prototypes.
-
-list_iterator_t *
-list_iterator_new(list_t *list, list_direction_t direction);
-
-list_iterator_t *
-list_iterator_new_from_node(list_node_t *node, list_direction_t direction);
-
-list_node_t *
-list_iterator_next(list_iterator_t *self);
+tools_list_remove(tools_list_t *self, tools_list_node_t *node);
 
 void
-list_iterator_destroy(list_iterator_t *self);
+tools_list_destroy(tools_list_t *self);
+
+// tools_list_t iterator prototypes.
+
+tools_list_iterator_t *
+tools_list_iterator_new(tools_list_t *list, tools_list_direction_t direction);
+
+tools_list_iterator_t *
+tools_list_iterator_new_from_node(tools_list_node_t *node, tools_list_direction_t direction);
+
+tools_list_node_t *
+tools_list_iterator_next(tools_list_iterator_t *self);
+
+void
+tools_list_iterator_destroy(tools_list_iterator_t *self);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __CLIBS_LIST_H__ */
+#endif /* __CLIBS_tools_list_H__ */
