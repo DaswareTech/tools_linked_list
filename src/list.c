@@ -18,7 +18,7 @@ tools_list_new(void) {
     return NULL;
   self->head = NULL;
   self->tail = NULL;
-  self->free = NULL;
+  self->free = tools_list_FREE;
   self->match = NULL;
   self->len = 0;
   return self;
