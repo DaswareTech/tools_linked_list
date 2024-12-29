@@ -213,3 +213,32 @@ tools_list_remove(tools_list_t *self, tools_list_node_t *node) {
   tools_list_FREE(node);
   --self->len;
 }
+
+/*
+ * Remove the given node from the list, freeing it and optinaly it's value.
+ * @self: Pointer to the list to delete a node 
+ * @node: Pointer the node to be deleted
+ */
+
+void
+tools_list_remove_with_opts(tools_list_t *self, tools_list_node_t *node, bool free_val) {
+  node->prev
+    ? (node->prev->next = node->next)
+    : (self->head = node->next);
+
+  node->next
+    ? (node->next->prev = node->prev)
+    : (self->tail = node->prev);
+
+  if (self->free && free_val) self->free(node->val);
+
+  tools_list_FREE(node);
+  --self->len;
+}
+
+void list_free_func(void* ptr) {
+    if (ptr != NULL) {
+        free(ptr);
+        ptr = NULL;
+    }
+}

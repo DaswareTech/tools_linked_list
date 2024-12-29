@@ -32,7 +32,7 @@ extern "C" {
 #endif
 
 #ifndef tools_list_FREE
-#define tools_list_FREE free
+#define tools_list_FREE list_free_func
 #endif
 
 /*
@@ -105,6 +105,8 @@ tools_list_lpop(tools_list_t *self);
 
 void
 tools_list_remove(tools_list_t *self, tools_list_node_t *node);
+void
+tools_list_remove_with_opts(tools_list_t *self, tools_list_node_t *node, bool free_val);
 
 void
 tools_list_destroy(tools_list_t *self);
@@ -122,6 +124,9 @@ tools_list_iterator_next(tools_list_iterator_t *self);
 
 void
 tools_list_iterator_destroy(tools_list_iterator_t *self);
+
+// Free
+void list_free_func(void* ptr);
 
 #ifdef __cplusplus
 }
