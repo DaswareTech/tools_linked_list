@@ -208,7 +208,10 @@ tools_list_remove(tools_list_t *self, tools_list_node_t *node) {
     ? (node->next->prev = node->prev)
     : (self->tail = node->prev);
 
-  if (self->free) self->free(node->val);
+  if (self->free) {
+    self->free(node->val);
+    node->val = NULL;
+  }
 
   tools_list_FREE(node);
   --self->len;
@@ -230,7 +233,10 @@ tools_list_remove_with_opts(tools_list_t *self, tools_list_node_t *node, bool fr
     ? (node->next->prev = node->prev)
     : (self->tail = node->prev);
 
-  if (self->free && free_val) self->free(node->val);
+  if (self->free && free_val){
+    self->free(node->val);
+    node->val = NULL;
+  }
 
   tools_list_FREE(node);
   --self->len;
@@ -239,6 +245,5 @@ tools_list_remove_with_opts(tools_list_t *self, tools_list_node_t *node, bool fr
 void list_free_func(void* ptr) {
     if (ptr != NULL) {
         free(ptr);
-        ptr = NULL;
     }
 }

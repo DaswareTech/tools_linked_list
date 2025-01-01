@@ -13,6 +13,7 @@ extern "C" {
 #endif
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 // Library version
 
